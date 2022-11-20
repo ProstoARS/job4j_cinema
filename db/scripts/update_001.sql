@@ -7,7 +7,8 @@ CREATE TABLE if NOT EXISTS users (
 
 CREATE TABLE if NOT EXISTS sessions (
                           id SERIAL PRIMARY KEY,
-                          name text
+                          name text,
+                          photo bytea
 );
 
 CREATE TABLE if NOT EXISTS ticket (
