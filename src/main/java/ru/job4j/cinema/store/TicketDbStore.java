@@ -9,6 +9,7 @@ import ru.job4j.cinema.model.Ticket;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
@@ -16,10 +17,10 @@ public class TicketDbStore {
 
     private static final Logger LOG = LogManager.getLogger(TicketDbStore.class);
     private static final String INSERT = """
-        INSERT INTO ticket(
-        session_id, pos_row, cell, user_id)
-        VALUES (?, ?, ?, ?)
-        """;
+            INSERT INTO ticket(
+            session_id, pos_row, cell, user_id)
+            VALUES (?, ?, ?, ?)
+            """;
     private final BasicDataSource pool;
 
     public TicketDbStore(BasicDataSource pool) {
@@ -28,12 +29,18 @@ public class TicketDbStore {
 
     public void addTicket(Ticket ticket, int userId) {
         try (Connection connection = pool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(INSERT)) {
-                ps.setInt(1, ticket.getSessionId());
-                ps.setInt(2, ticket.getPosRow());
-                ps.setInt(3, ticket.getCell());
-                ps.setInt(4, userId);
-                ps.execute();
+             PreparedStatement ps = connection.prepareStatement(INSERT,
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, ticket.getSessionId());
+            ps.setInt(2, ticket.getPosRow());
+            ps.setInt(3, ticket.getCell());
+            ps.setInt(4, userId);
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    ticket.setId(id.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }

@@ -2,6 +2,7 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Controller;
 import ru.job4j.cinema.model.Ticket;
+import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.store.TicketDbStore;
 
 
@@ -14,7 +15,7 @@ public class TicketService {
         this.ticketDbStore = ticketDbStore;
     }
 
-    public void addTicket(Ticket ticket, int userId) {
-        ticketDbStore.addTicket(ticket, userId);
+    public void addTicket(Ticket ticket, User user) {
+        ticketDbStore.addTicket(ticket, user.getUserId());
     }
 }

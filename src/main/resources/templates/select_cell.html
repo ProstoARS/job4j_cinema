@@ -42,26 +42,26 @@
             </div>
         </div>
     </nav>
-    <form>
     <div class="row pt-3 justify-content-center">
-        <img th:width="500" th:src="@{/schemaPhoto}" alt="file not found">
+        <img width="500" th:src="@{/schemaPhoto}" alt="file not found">
     </div>
-    </form>
     <div class="row pt-3 justify-content-center">
         <div class="card" style="width: 70%">
             <div class="card-header">
                 Покупка билета
             </div>
             <div class="card-body">
-                <form th:action="@{/addRow}" method="POST">
-                    <input type="hidden" name="sessionId" th:value="${movie.getId()}"/>
-                    <div  class="form-group">
-                        <label for="row">Ряд</label>
-                        <select class="form-control" id="row" name="posRow">
-                            <option th:each="row : ${posRows}" th:text="${row}" th:value="${row}"></option>
+                <form th:action="@{/createTicket}" method="POST">
+                    <input type="hidden" name="posRow" th:value="${posRow}"/>
+                    <input type="hidden" name="sessionId" th:value="${sessionId}"/>
+                    <div class="form-group">
+                        <label for="cell">Выберите место</label>
+                        <select class="form-control" id="cell" name="cell">
+                            <option th:each="cell : ${cells}" th:value="${cell}"
+                                    th:text="${cell}"></option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Далее</button>
+                    <button type="submit" class="btn btn-primary">Забронировать</button>
                 </form>
             </div>
         </div>

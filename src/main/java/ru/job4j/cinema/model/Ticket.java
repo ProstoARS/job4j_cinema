@@ -7,21 +7,24 @@ public class Ticket {
     private int id;
     private int posRow;
     private int cell;
+    private int sessionId;
 
-    private int movieId;
+    public Ticket() {
+    }
 
-    public Ticket(int id, int posRow, int cell) {
+    public Ticket(int id, int posRow, int cell, int sessionId) {
         this.id = id;
         this.posRow = posRow;
         this.cell = cell;
+        this.sessionId = sessionId;
     }
 
     public int getSessionId() {
-        return movieId;
+        return sessionId;
     }
 
     public void setSessionId(int sessionId) {
-        this.movieId = sessionId;
+        this.sessionId = sessionId;
     }
 
     public int getId() {
@@ -70,6 +73,7 @@ public class Ticket {
                 + "id=" + id
                 + ", posRow=" + posRow
                 + ", cell=" + cell
+                + ", sessionId=" + sessionId
                 + '}';
     }
 }
