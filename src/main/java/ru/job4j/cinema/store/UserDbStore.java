@@ -24,7 +24,7 @@ public class UserDbStore {
             """;
 
     private static final String FIND_USER = """
-            SELECT * 
+            SELECT *
             FROM users
             WHERE email = ? and phone = ?
             """;
@@ -49,6 +49,7 @@ public class UserDbStore {
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
+            return Optional.empty();
         }
         return Optional.of(user);
     }

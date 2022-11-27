@@ -19,9 +19,6 @@ public class UserService {
         return userDbStore.addUser(user);
     }
 
-    /*
-    Тут просто сквозной сделал.
-    */
     public Optional<User> findUserByEmailAndPhone(String email, String phone) {
         return userDbStore.findUserByEmailAndPhone(email, phone);
     }
