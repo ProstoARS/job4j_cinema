@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ru.job4j.cinema.util.PropertyReader.*;
+
 public class MovieStore {
     private static final int INDEX_DIFFERENCE = 1;
     private static final MovieStore INST = new MovieStore();
@@ -13,10 +15,10 @@ public class MovieStore {
 
 
     private MovieStore() {
-        movies.add(new Movie(1, "Чужие", addPoster("/images/aliens.jpg")));
-        movies.add(new Movie(2, "Терминатор", addPoster("/images/Terminator.jpg")));
-        movies.add(new Movie(3, "Титаник", addPoster("/images/титаник.jpg")));
-        movies.add(new Movie(4, "Аватар", addPoster("/images/аватар.jpg")));
+        movies.add(new Movie(1, "Чужие", addPoster("aliens")));
+        movies.add(new Movie(2, "Терминатор", addPoster("terminator")));
+        movies.add(new Movie(3, "Титаник", addPoster("titanic")));
+        movies.add(new Movie(4, "Аватар", addPoster("avatar")));
     }
 
     public static MovieStore instOf() {
@@ -24,7 +26,9 @@ public class MovieStore {
     }
 
     private byte[] addPoster(String file) {
-        try (InputStream resource = MovieStore.class.getResourceAsStream(file)) {
+
+        try (InputStream resource = MovieStore.class.getResourceAsStream(
+                load("img_location.properties").getProperty(file))) {
             if (resource != null) {
                 return resource.readAllBytes();
             }

@@ -2,10 +2,13 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Hall;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ru.job4j.cinema.util.PropertyReader.*;
 
 @Service
 public class HallService {
@@ -17,7 +20,8 @@ public class HallService {
     private List<Integer> cells;
 
     public HallService(List<Integer> posRows, List<Integer> cells) {
-        this.hall = new Hall(7, 15, addSchema("/images/schema.jpg"));
+        this.hall = new Hall(7, 15,
+                addSchema(load("img_location.properties").getProperty("hallLocation")));
         initRows();
         initSells();
     }

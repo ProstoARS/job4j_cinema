@@ -4,27 +4,14 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Objects;
+import ru.job4j.cinema.util.PropertyReader;
 import java.util.Properties;
 
 @SpringBootApplication
 public class Main {
 
     private Properties loadDbProperties() {
-        Properties cfg = new Properties();
-        try (BufferedReader io = new BufferedReader(
-                new InputStreamReader(
-                        Objects.requireNonNull(Main.class.getClassLoader()
-                                .getResourceAsStream("db.properties"))
-                )
-        )) {
-            cfg.load(io);
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
+        Properties cfg = PropertyReader.load("db.properties");
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (Exception e) {
