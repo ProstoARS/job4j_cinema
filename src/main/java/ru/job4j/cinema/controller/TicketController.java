@@ -19,6 +19,8 @@ import ru.job4j.cinema.service.TicketService;
 import javax.servlet.http.HttpSession;
 
 
+import java.util.Optional;
+
 import static ru.job4j.cinema.util.SessionUser.*;
 
 @Controller
@@ -67,7 +69,10 @@ public class TicketController {
 
     @PostMapping("/createTicket")
     public String createTicket(@ModelAttribute Ticket ticket, HttpSession session) {
-                ticketService.addTicket(ticket, getSessionUser(session));
+                Optional<Ticket> dbTicket = ticketService.addTicket(ticket, getSessionUser(session));
+                if (dbTicket.isEmpty()) {
+                    return "redirect:/failTicket";
+                }
         return "redirect:/ticket";
     }
 

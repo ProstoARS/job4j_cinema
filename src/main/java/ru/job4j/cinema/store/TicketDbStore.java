@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 @Repository
 public class TicketDbStore {
@@ -27,7 +28,7 @@ public class TicketDbStore {
         this.pool = pool;
     }
 
-    public void addTicket(Ticket ticket, int userId) {
+    public Optional<Ticket> addTicket(Ticket ticket, int userId) {
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -43,6 +44,8 @@ public class TicketDbStore {
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
+            return Optional.empty();
         }
+        return Optional.of(ticket);
     }
 }

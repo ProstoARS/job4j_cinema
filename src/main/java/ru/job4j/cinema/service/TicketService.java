@@ -5,6 +5,8 @@ import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.store.TicketDbStore;
 
+import java.util.Optional;
+
 
 @Controller
 public class TicketService {
@@ -15,7 +17,7 @@ public class TicketService {
         this.ticketDbStore = ticketDbStore;
     }
 
-    public void addTicket(Ticket ticket, User user) {
-        ticketDbStore.addTicket(ticket, user.getUserId());
+    public Optional<Ticket> addTicket(Ticket ticket, User user) {
+        return ticketDbStore.addTicket(ticket, user.getUserId());
     }
 }
