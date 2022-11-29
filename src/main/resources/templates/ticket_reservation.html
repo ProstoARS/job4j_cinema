@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <title>Cinema</title>
+</head>
+<body>
+<div class="row pt-5 justify-content-center">
+    <h3>Забронированный билет</h3>
+</div>
+<div class="container pt-3">
+    <div class="row pt-3 justify-content-center">
+        <div class="card text-center" style="width: 25%">
+            <div class="card">
+                <img th:src="@{|/photoMovie/${movie.getId}}" class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title" th:text="${movie.getName()}">Название карточки</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ряд</th>
+                        <th scope="col">место</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td th:text="${posRow}"></td>
+                        <td th:text="${cell}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <form th:action="@{/createTicket}" method="POST">
+                    <input type="hidden" name="posRow" th:value="${posRow}"/>
+                    <input type="hidden" name="cell" th:value="${cell}"/>
+                    <input type="hidden" name="movieId" th:value="${movie.getId()}"/>
+                    <button type="submit" class="btn btn-outline-primary">Купить</button>
+                    <a type="button" class="btn btn-outline-primary" th:href="@{/index}">Отменить</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @GetMapping("/success")
-    public String success(Model model) {
+    public String success() {
         return "/success";
     }
 }

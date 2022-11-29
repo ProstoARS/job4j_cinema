@@ -43,28 +43,50 @@ public class TicketController {
                                 HttpSession session) {
         model.addAttribute("ticket", new Ticket(0, 0, 0, Integer.parseInt(id)));
         model.addAttribute("posRows", hallService.getPosRows());
-        model.addAttribute("movie", sessionService.findById(Integer.parseInt(id)));
+        model.addAttribute("movie", id);
         model.addAttribute("user", getSessionUser(session));
         return "select_row";
     }
 
     @PostMapping("/addRow")
-    public String addTicketRow(HttpSession session, @ModelAttribute Ticket ticket,
+    public String addTicketRow(@ModelAttribute Ticket ticket,
                                RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("posRow", ticket.getPosRow());
-        redirectAttributes.addAttribute("sessionId", ticket.getSessionId());
-        return "redirect:/formCellTicket/{posRow}/{sessionId}";
+        redirectAttributes.addAttribute("movieId", ticket.getMovieId());
+        return "redirect:/formCellTicket/{posRow}/{movieId}";
     }
 
-    @GetMapping("/formCellTicket/{posRow}/{sessionId}")
-    public String addTicketCell(Model model, HttpSession session,
+    @GetMapping("/formCellTicket/{posRow}/{movieId}")
+    public String formTicketCell(Model model, HttpSession session,
                                 @PathVariable("posRow") String posRow,
-                                @PathVariable("sessionId") String sessionId) {
+                                @PathVariable("movieId") String movieId) {
         model.addAttribute("cells", hallService.getCells());
         model.addAttribute("user", getSessionUser(session));
-        model.addAttribute("posRow", Integer.parseInt(posRow));
-        model.addAttribute("sessionId", Integer.parseInt(sessionId));
+        model.addAttribute("posRow", posRow);
+        model.addAttribute("movieId", movieId);
         return "select_cell";
+    }
+
+    @PostMapping("/addCell")
+    public String addTicketCell(@ModelAttribute Ticket ticket,
+                               RedirectAttributes redirectAttributes) {
+        System.out.println(ticket);
+        redirectAttributes.addAttribute("posRow", ticket.getPosRow());
+        redirectAttributes.addAttribute("cell", ticket.getCell());
+        redirectAttributes.addAttribute("movieId", ticket.getMovieId());
+        return "redirect:/formTicketReservation/{posRow}/{cell}/{movieId}";
+    }
+
+    @GetMapping("/formTicketReservation/{posRow}/{cell}/{movieId}")
+    public String formReservation(Model model,
+                                  @PathVariable("posRow") String posRow,
+                                  @PathVariable("cell") String cell,
+                                  @PathVariable("movieId") String movieId, HttpSession session) {
+        model.addAttribute("posRow", Integer.parseInt(posRow));
+        model.addAttribute("cell", Integer.parseInt(cell));
+        model.addAttribute("user", getSessionUser(session));
+        model.addAttribute("movie", sessionService.findById(Integer.parseInt(movieId)));
+        return "ticket_reservation";
     }
 
     @PostMapping("/createTicket")
@@ -77,7 +99,8 @@ public class TicketController {
     }
 
     @GetMapping("/ticket")
-    public String ticket(Model model) {
+    public String ticket(Model model, HttpSession session) {
+        model.addAttribute("user", getSessionUser(session));
         return "/ticket";
     }
 

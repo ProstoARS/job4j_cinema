@@ -17,7 +17,9 @@ public class AuthFilter implements Filter {
             "registration",
             "success",
             "select_row",
-            "select_cell"
+            "select_cell",
+            "ticket_reservation",
+            "ticket"
     );
 
     @Override

@@ -54,7 +54,7 @@
             </div>
             <div class="card-body">
                 <form th:action="@{/addRow}" method="POST">
-                    <input type="hidden" name="sessionId" th:value="${movie.getId()}"/>
+                    <input type="hidden" name="movieId" th:value="${movie}"/>
                     <div  class="form-group">
                         <label for="row">Ряд</label>
                         <select class="form-control" id="row" name="posRow">

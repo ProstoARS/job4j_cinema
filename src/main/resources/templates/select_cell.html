@@ -51,9 +51,9 @@
                 Покупка билета
             </div>
             <div class="card-body">
-                <form th:action="@{/createTicket}" method="POST">
+                <form th:action="@{/addCell}" method="POST">
                     <input type="hidden" name="posRow" th:value="${posRow}"/>
-                    <input type="hidden" name="sessionId" th:value="${sessionId}"/>
+                    <input type="hidden" name="movieId" th:value="${movieId}"/>
                     <div class="form-group">
                         <label for="cell">Выберите место</label>
                         <select class="form-control" id="cell" name="cell">

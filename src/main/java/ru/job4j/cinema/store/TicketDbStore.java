@@ -32,7 +32,7 @@ public class TicketDbStore {
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT,
                      PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, ticket.getSessionId());
+            ps.setInt(1, ticket.getMovieId());
             ps.setInt(2, ticket.getPosRow());
             ps.setInt(3, ticket.getCell());
             ps.setInt(4, userId);
