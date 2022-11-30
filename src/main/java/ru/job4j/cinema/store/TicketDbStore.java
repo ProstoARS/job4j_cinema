@@ -22,6 +22,11 @@ public class TicketDbStore {
             session_id, pos_row, cell, user_id)
             VALUES (?, ?, ?, ?)
             """;
+
+    private static final String FIND_TICKET = """
+            SELECT * FROM ticket
+            WHERE id = ?;
+            """;
     private final BasicDataSource pool;
 
     public TicketDbStore(BasicDataSource pool) {
@@ -47,5 +52,25 @@ public class TicketDbStore {
             return Optional.empty();
         }
         return Optional.of(ticket);
+    }
+
+    public Ticket findById(int id) {
+        try (Connection connection = pool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(FIND_TICKET)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Ticket(
+                            rs.getInt(1),
+                            rs.getInt(2),
+                            rs.getInt(3),
+                            rs.getInt(4)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return null;
     }
 }

@@ -12,6 +12,12 @@ public class Ticket {
     public Ticket() {
     }
 
+    public Ticket(int posRow, int cell, int movieId) {
+        this.posRow = posRow;
+        this.cell = cell;
+        this.movieId = movieId;
+    }
+
     public Ticket(int id, int posRow, int cell, int movieId) {
         this.id = id;
         this.posRow = posRow;

@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +41,7 @@ public class SessionDbStore {
         this.pool = pool;
     }
 
-    public void addSession(Movie movie) {
+    public Optional<Integer> addSession(Movie movie) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, movie.getName());
@@ -48,11 +50,13 @@ public class SessionDbStore {
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     movie.setId(id.getInt(1));
+                    return Optional.of(movie.getId());
                 }
             }
         } catch (Exception exception) {
             LOG.error(exception.getMessage(), exception);
         }
+        return Optional.empty();
     }
 
     public List<Movie> findAll() {

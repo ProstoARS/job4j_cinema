@@ -9,6 +9,7 @@ public class Movie {
 
     private byte[] photo;
 
+
     public Movie(int id, String name) {
         this.id = id;
         this.name = name;

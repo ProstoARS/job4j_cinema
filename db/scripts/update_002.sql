@@ -1,1 +1,0 @@
-ALTER TABLE ticket ADD UNIQUE (session_id, pos_row, cell);
