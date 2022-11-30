@@ -112,4 +112,9 @@ public class TicketController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(new ByteArrayResource(hallService.getSchema()));
     }
+
+    @GetMapping("/failTicket")
+    public String fail() {
+        return "/sailFail";
+    }
 }
