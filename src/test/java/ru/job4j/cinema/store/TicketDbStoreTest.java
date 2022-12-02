@@ -40,7 +40,7 @@ class TicketDbStoreTest {
     }
 
     @Test
-    public void whenCreateTicket() {
+    public void whenAddTicket() {
         TicketDbStore ticketDbStore = new TicketDbStore(pool);
         SessionDbStore sessionDbStore = new SessionDbStore(pool);
         UserDbStore userDbStore = new UserDbStore(pool);
@@ -51,7 +51,6 @@ class TicketDbStoreTest {
         Ticket ticket = new Ticket(9, 7, movie.getId());
         int ticketId = ticketDbStore.addTicket(ticket, userId).get().getId();
         ticket.setId(ticketId);
-
         Ticket ticketInDb = ticketDbStore.findById(ticketId);
         assertThat(ticketInDb).isEqualTo(ticket);
     }

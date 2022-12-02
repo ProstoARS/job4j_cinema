@@ -1,6 +1,8 @@
 package ru.job4j.cinema.model;
 
+import net.jcip.annotations.ThreadSafe;
 
+@ThreadSafe
 public class Hall {
 
     private int rows;
