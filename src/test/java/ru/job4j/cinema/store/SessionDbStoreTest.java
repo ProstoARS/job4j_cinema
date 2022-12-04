@@ -4,7 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.job4j.cinema.Main;
+import ru.job4j.cinema.config.TestDataSourceConfig;
 import ru.job4j.cinema.model.Movie;
 
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ class SessionDbStoreTest {
 
     @BeforeAll
     public static void loadPool() {
-        pool = new Main().loadPool();
+        pool = new TestDataSourceConfig().loadPool();
     }
 
     @AfterEach
