@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.job4j.cinema.model.Movie;
 import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.service.SessionService;
-import ru.job4j.cinema.store.MovieStore;
+import ru.job4j.cinema.repository.MovieStore;
 
 import javax.servlet.http.HttpSession;
 

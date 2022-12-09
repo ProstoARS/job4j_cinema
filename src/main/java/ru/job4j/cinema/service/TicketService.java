@@ -3,7 +3,7 @@ package ru.job4j.cinema.service;
 import org.springframework.stereotype.Controller;
 import ru.job4j.cinema.model.Ticket;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.store.TicketDbStore;
+import ru.job4j.cinema.repository.TicketDbStore;
 
 import java.util.Optional;
 

@@ -2,7 +2,7 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.store.UserDbStore;
+import ru.job4j.cinema.repository.UserDbStore;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package ru.job4j.cinema.store;
+package ru.job4j.cinema.repository;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.jupiter.api.AfterEach;
@@ -6,15 +6,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cinema.config.TestDataSourceConfig;
 import ru.job4j.cinema.model.Movie;
+import ru.job4j.cinema.model.Ticket;
+import ru.job4j.cinema.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class SessionDbStoreTest {
+class TicketDbStoreTest {
 
     private static BasicDataSource pool;
 
@@ -40,27 +40,19 @@ class SessionDbStoreTest {
     }
 
     @Test
-    public void whenAddSession() {
+    public void whenAddTicket() {
+        TicketDbStore ticketDbStore = new TicketDbStore(pool);
         SessionDbStore sessionDbStore = new SessionDbStore(pool);
-        Movie movie = new Movie(2, "Titanic");
-        int movieId = sessionDbStore.addSession(movie).get();
-        movie.setId(movieId);
-        Movie movieFromDb = sessionDbStore.findById(movie.getId());
-        assertThat(movieFromDb).isEqualTo(movie);
-    }
-
-    @Test
-    public void whenFindAllSession() {
-        SessionDbStore sessionDbStore = new SessionDbStore(pool);
-        Movie movie1 = new Movie(2, "Titanic");
-        Movie movie2 = new Movie(3, "Avatar");
-        int movieId1 = sessionDbStore.addSession(movie1).get();
-        int movieId2 = sessionDbStore.addSession(movie2).get();
-        movie1.setId(movieId1);
-        movie2.setId(movieId2);
-        List<Movie> movies = new ArrayList<>(List.of(movie1, movie2));
-        List<Movie> expected = sessionDbStore.findAll();
-        assertThat(expected).isEqualTo(movies);
+        UserDbStore userDbStore = new UserDbStore(pool);
+        User user = new User("ars", "ars@mail.ru", "05576");
+        int userId = userDbStore.addUser(user).get().getUserId();
+        Movie movie = new Movie(1, "Titanic");
+        sessionDbStore.addSession(movie);
+        Ticket ticket = new Ticket(9, 7, movie.getId());
+        int ticketId = ticketDbStore.addTicket(ticket, userId).get().getId();
+        ticket.setId(ticketId);
+        Ticket ticketInDb = ticketDbStore.findById(ticketId);
+        assertThat(ticketInDb).isEqualTo(ticket);
     }
 
 }
