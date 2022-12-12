@@ -1,43 +1,58 @@
 package ru.job4j.cinema.model;
 
-import net.jcip.annotations.ThreadSafe;
+import java.util.ArrayList;
+import java.util.List;
 
-@ThreadSafe
 public class Hall {
 
-    private int rows;
-    private int cells;
+    private final int row;
+    private final int cell;
+    private final byte[] schema;
+    private Integer id;
 
-    private byte[] schema;
+    private List<Integer> posRows;
 
+    private List<Integer> cells;
 
-    public Hall(int rows, int cells, byte[] schema) {
-        this.rows = rows;
-        this.cells = cells;
+    public Hall(int row, int cell, byte[] schema) {
+        this.row = row;
+        this.cell = cell;
         this.schema = schema;
+        initRows();
+        initSells();
     }
 
-    public int getRows() {
-        return rows;
+    private void initRows() {
+        this.posRows = new ArrayList<>();
+        for (int i = 1; i <= row; i++) {
+            posRows.add(i);
+        }
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
+    private void initSells() {
+        this.cells = new ArrayList<>();
+        for (int i = 1; i <= cell; i++) {
+            cells.add(i);
+        }
     }
 
-    public int getCell() {
+    public List<Integer> getPosRows() {
+        return posRows;
+    }
+
+    public List<Integer> getCells() {
         return cells;
-    }
-
-    public void setCell(int cell) {
-        this.cells = cell;
     }
 
     public byte[] getSchema() {
         return schema;
     }
 
-    public void setSchema(byte[] schema) {
-        this.schema = schema;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

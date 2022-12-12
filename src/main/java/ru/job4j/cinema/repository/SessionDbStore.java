@@ -17,7 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Repository
-public class SessionDbStore {
+public class SessionDbStore implements SessionRepository {
 
     private static final Logger LOG = LogManager.getLogger(SessionDbStore.class);
     private static final String FIND_ALL = """
@@ -41,6 +41,7 @@ public class SessionDbStore {
         this.pool = pool;
     }
 
+    @Override
     public Optional<Integer> addSession(Movie movie) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -59,6 +60,7 @@ public class SessionDbStore {
         return Optional.empty();
     }
 
+    @Override
     public List<Movie> findAll() {
         List<Movie> movies = new ArrayList<>();
         try (Connection connection = pool.getConnection();
@@ -74,6 +76,7 @@ public class SessionDbStore {
         return movies;
     }
 
+    @Override
     public Movie findById(Integer movieId) {
         try (Connection connection = pool.getConnection();
         PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {

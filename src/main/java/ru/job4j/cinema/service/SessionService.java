@@ -2,28 +2,31 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Movie;
-import ru.job4j.cinema.repository.SessionDbStore;
+import ru.job4j.cinema.repository.SessionRepository;
 
 import java.util.List;
 
 @Service
-public class SessionService {
+public class SessionService implements ISessionService {
 
-    private final SessionDbStore sessionDbStore;
+    private final SessionRepository sessionRepository;
 
-    public SessionService(SessionDbStore sessionDbStore) {
-        this.sessionDbStore = sessionDbStore;
+    public SessionService(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
     }
 
+    @Override
     public void addSession(Movie movie) {
-        sessionDbStore.addSession(movie);
+        sessionRepository.addSession(movie);
     }
 
+    @Override
     public List<Movie> findAll() {
-        return sessionDbStore.findAll();
+        return sessionRepository.findAll();
     }
 
+    @Override
     public Movie findById(int id) {
-        return sessionDbStore.findById(id);
+        return sessionRepository.findById(id);
     }
 }

@@ -1,10 +1,7 @@
 package ru.job4j.cinema.model;
 
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.Objects;
 
-@ThreadSafe
 public class User {
 
     private String userName;

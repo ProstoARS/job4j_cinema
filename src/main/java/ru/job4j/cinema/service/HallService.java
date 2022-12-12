@@ -2,64 +2,32 @@ package ru.job4j.cinema.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.cinema.model.Hall;
+import ru.job4j.cinema.repository.HallRepository;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
-import static ru.job4j.cinema.util.PropertyReader.*;
-
 @Service
-public class HallService {
+public class HallService implements IHallService {
 
-    private final Hall hall;
+    private final HallRepository hallRepository;
 
-    private List<Integer> posRows;
 
-    private List<Integer> cells;
-
-    public HallService(List<Integer> posRows, List<Integer> cells) {
-        this.hall = new Hall(7, 15,
-                addSchema(load("img_location.properties").getProperty("hallLocation")));
-        initRows();
-        initSells();
+    public HallService(HallRepository hallRepository) {
+        this.hallRepository = hallRepository;
     }
 
-    private void initRows() {
-        this.posRows = new ArrayList<>();
-        for (int i = 1; i <= hall.getRows(); i++) {
-            posRows.add(i);
-        }
+    @Override
+    public void addHall(Hall hall) {
+        hallRepository.addHall(hall);
     }
 
-    private void initSells() {
-        this.cells = new ArrayList<>();
-        for (int i = 1; i <= hall.getCell(); i++) {
-            cells.add(i);
-        }
+    @Override
+    public List<Hall> findAll() {
+        return hallRepository.findAll();
     }
 
-    private byte[] addSchema(String file) {
-        try (InputStream resource = HallService.class.getResourceAsStream(file)) {
-            if (resource != null) {
-                return resource.readAllBytes();
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-    }
-
-    public List<Integer> getPosRows() {
-        return posRows;
-    }
-
-    public List<Integer> getCells() {
-        return cells;
-    }
-
-    public byte[] getSchema() {
-        return hall.getSchema();
+    @Override
+    public Hall findById(int id) {
+        return hallRepository.findById(id);
     }
 }

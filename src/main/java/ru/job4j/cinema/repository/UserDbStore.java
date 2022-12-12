@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
-public class UserDbStore {
+public class UserDbStore implements UserRepository {
 
     private static final Logger LOG = LogManager.getLogger(UserDbStore.class);
 
@@ -35,6 +35,7 @@ public class UserDbStore {
         this.pool = pool;
     }
 
+    @Override
     public Optional<User> addUser(User user) {
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -54,6 +55,7 @@ public class UserDbStore {
         return Optional.of(user);
     }
 
+    @Override
     public Optional<User> findUserByEmailAndPhone(String email, String phone) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(FIND_USER)) {

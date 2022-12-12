@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
-public class TicketDbStore {
+public class TicketDbStore implements TicketRepository {
 
     private static final Logger LOG = LogManager.getLogger(TicketDbStore.class);
     private static final String INSERT = """
@@ -33,6 +33,7 @@ public class TicketDbStore {
         this.pool = pool;
     }
 
+    @Override
     public Optional<Ticket> addTicket(Ticket ticket, int userId) {
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(INSERT,
@@ -54,6 +55,7 @@ public class TicketDbStore {
         return Optional.of(ticket);
     }
 
+    @Override
     public Ticket findById(int id) {
         try (Connection connection = pool.getConnection();
              PreparedStatement ps = connection.prepareStatement(FIND_TICKET)) {

@@ -10,8 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.cinema.model.Movie;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.service.SessionService;
-import ru.job4j.cinema.repository.MovieStore;
+import ru.job4j.cinema.repository.IMovieRepository;
+import ru.job4j.cinema.service.ISessionService;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,11 +19,12 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CinemaControl {
 
-    private final MovieStore moviesStore = MovieStore.instOf();
-    private final SessionService sessionService;
+    private final IMovieRepository iMovieRepository;
+    private final ISessionService iSessionService;
 
-    public CinemaControl(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public CinemaControl(ISessionService iSessionService, IMovieRepository iMovieRepository) {
+        this.iSessionService = iSessionService;
+        this.iMovieRepository = iMovieRepository;
         initCinema();
     }
 
@@ -35,13 +36,13 @@ public class CinemaControl {
             user.setUserName("Гость");
         }
         model.addAttribute("user", user);
-        model.addAttribute("movies", sessionService.findAll());
+        model.addAttribute("movies", iSessionService.findAll());
         return "index";
     }
 
     @GetMapping("/photoMovie/{movieId}")
     public ResponseEntity<Resource> download(@PathVariable("movieId") Integer movieId) {
-        Movie movie = sessionService.findById(movieId);
+        Movie movie = iSessionService.findById(movieId);
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
                 .contentLength(movie.getPhoto().length)
@@ -50,8 +51,8 @@ public class CinemaControl {
     }
 
     private void initCinema() {
-       if (sessionService.findAll().isEmpty()) {
-           moviesStore.findAll().forEach(sessionService::addSession);
+       if (iSessionService.findAll().isEmpty()) {
+           iMovieRepository.findAll().forEach(iSessionService::addSession);
        }
     }
 

@@ -1,9 +1,7 @@
 package ru.job4j.cinema.model;
 
-import net.jcip.annotations.ThreadSafe;
-
 import java.util.Objects;
-@ThreadSafe
+
 public class Movie {
 
     private int id;
@@ -17,8 +15,7 @@ public class Movie {
         this.name = name;
     }
 
-    public Movie(int id, String name, byte[] photo) {
-        this.id = id;
+    public Movie(String name, byte[] photo) {
         this.name = name;
         this.photo = photo;
     }

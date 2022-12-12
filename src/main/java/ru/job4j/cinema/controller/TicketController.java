@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.job4j.cinema.model.Ticket;
-import ru.job4j.cinema.service.HallService;
-import ru.job4j.cinema.service.SessionService;
-import ru.job4j.cinema.service.TicketService;
+import ru.job4j.cinema.service.*;
+
 import javax.servlet.http.HttpSession;
 
 
@@ -26,23 +25,26 @@ import static ru.job4j.cinema.util.SessionUser.*;
 @Controller
 public class TicketController {
 
-    private final TicketService ticketService;
-    private final SessionService sessionService;
-    private final HallService hallService;
+    private static final int HALL_ID_THEN_USE_HALL_STORE = 1;
 
-    public TicketController(TicketService ticketService,
-                            SessionService sessionService,
-                            HallService hallService) {
-        this.ticketService = ticketService;
-        this.sessionService = sessionService;
-        this.hallService = hallService;
+    private final ITicketService iTicketService;
+    private final ISessionService iSessionService;
+    private final IHallService ihallService;
+
+    public TicketController(ITicketService iTicketService,
+                            ISessionService iSessionService,
+                            IHallService ihallService) {
+        this.iTicketService = iTicketService;
+        this.iSessionService = iSessionService;
+        this.ihallService = ihallService;
     }
 
     @GetMapping("/formRowTicket/{movieId}")
     public String formTicketRow(Model model, @PathVariable("movieId") String id,
                                 HttpSession session) {
         model.addAttribute("ticket", new Ticket(0, 0, 0, Integer.parseInt(id)));
-        model.addAttribute("posRows", hallService.getPosRows());
+        model.addAttribute("posRows",
+                ihallService.findById(HALL_ID_THEN_USE_HALL_STORE).getPosRows());
         model.addAttribute("movie", id);
         model.addAttribute("user", getSessionUser(session));
         return "select_row";
@@ -60,7 +62,8 @@ public class TicketController {
     public String formTicketCell(Model model, HttpSession session,
                                 @PathVariable("posRow") String posRow,
                                 @PathVariable("movieId") String movieId) {
-        model.addAttribute("cells", hallService.getCells());
+        model.addAttribute("cells",
+                ihallService.findById(HALL_ID_THEN_USE_HALL_STORE).getCells());
         model.addAttribute("user", getSessionUser(session));
         model.addAttribute("posRow", posRow);
         model.addAttribute("movieId", movieId);
@@ -85,13 +88,13 @@ public class TicketController {
         model.addAttribute("posRow", Integer.parseInt(posRow));
         model.addAttribute("cell", Integer.parseInt(cell));
         model.addAttribute("user", getSessionUser(session));
-        model.addAttribute("movie", sessionService.findById(Integer.parseInt(movieId)));
+        model.addAttribute("movie", iSessionService.findById(Integer.parseInt(movieId)));
         return "ticket_reservation";
     }
 
     @PostMapping("/createTicket")
     public String createTicket(@ModelAttribute Ticket ticket, HttpSession session) {
-                Optional<Ticket> dbTicket = ticketService.addTicket(ticket, getSessionUser(session));
+                Optional<Ticket> dbTicket = iTicketService.addTicket(ticket, getSessionUser(session));
                 if (dbTicket.isEmpty()) {
                     return "redirect:/failTicket";
                 }
@@ -106,11 +109,13 @@ public class TicketController {
 
     @GetMapping("/schemaPhoto")
     public ResponseEntity<Resource> download() {
+        System.out.println("МЫ ТУТ!");
         return ResponseEntity.ok()
                 .headers(new HttpHeaders())
-                .contentLength(hallService.getSchema().length)
+                .contentLength(ihallService.findById(HALL_ID_THEN_USE_HALL_STORE).getSchema().length)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(new ByteArrayResource(hallService.getSchema()));
+                .body(new ByteArrayResource(
+                        ihallService.findById(HALL_ID_THEN_USE_HALL_STORE).getSchema()));
     }
 
     @GetMapping("/failTicket")
