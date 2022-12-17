@@ -4,7 +4,7 @@ import ru.job4j.cinema.model.Movie;
 
 import java.util.List;
 
-public interface IMovieRepository {
+public interface MovieRepository {
 
     void addMovie(Movie movie);
 

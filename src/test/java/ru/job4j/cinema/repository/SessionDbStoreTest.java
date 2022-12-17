@@ -41,7 +41,7 @@ class SessionDbStoreTest {
 
     @Test
     public void whenAddSession() {
-        SessionDbStore sessionDbStore = new SessionDbStore(pool);
+        SessionDbRepository sessionDbStore = new SessionDbRepository(pool);
         Movie movie = new Movie(2, "Titanic");
         int movieId = sessionDbStore.addSession(movie).get();
         movie.setId(movieId);
@@ -51,7 +51,7 @@ class SessionDbStoreTest {
 
     @Test
     public void whenFindAllSession() {
-        SessionDbStore sessionDbStore = new SessionDbStore(pool);
+        SessionDbRepository sessionDbStore = new SessionDbRepository(pool);
         Movie movie1 = new Movie(2, "Titanic");
         Movie movie2 = new Movie(3, "Avatar");
         int movieId1 = sessionDbStore.addSession(movie1).get();

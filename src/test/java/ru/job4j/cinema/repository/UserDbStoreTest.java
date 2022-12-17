@@ -39,7 +39,7 @@ class UserDbStoreTest {
 
     @Test
     public void whenAddUser() {
-        UserDbStore store = new UserDbStore(pool);
+        UserDbRepository store = new UserDbRepository(pool);
         User user = new User("ars", "ars@mail.ru", "05576");
         store.addUser(user);
         User userFromDB = store.findUserByEmailAndPhone("ars@mail.ru", "05576").get();

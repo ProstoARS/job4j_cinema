@@ -12,13 +12,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static ru.job4j.cinema.util.PropertyReader.*;
 
 @Repository
-public class MovieStore implements IMovieRepository {
+public class MovieMemoryRepository implements MovieRepository {
     private final Map<Integer, Movie> movies = new ConcurrentHashMap<>();
 
     private final AtomicInteger id = new AtomicInteger();
 
 
-    private MovieStore() {
+    private MovieMemoryRepository() {
         addMovie(new Movie("Чужие", addPoster("aliens")));
         addMovie(new Movie("Терминатор", addPoster("terminator")));
         addMovie(new Movie("Титаник", addPoster("titanic")));
@@ -42,7 +42,7 @@ public class MovieStore implements IMovieRepository {
     }
 
     private byte[] addPoster(String file) {
-        try (InputStream resource = MovieStore.class.getResourceAsStream(
+        try (InputStream resource = MovieMemoryRepository.class.getResourceAsStream(
                 load("img_location.properties").getProperty(file))) {
             if (resource != null) {
                 return resource.readAllBytes();

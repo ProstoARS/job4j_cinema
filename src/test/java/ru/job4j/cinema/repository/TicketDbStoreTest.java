@@ -41,9 +41,9 @@ class TicketDbStoreTest {
 
     @Test
     public void whenAddTicket() {
-        TicketDbStore ticketDbStore = new TicketDbStore(pool);
-        SessionDbStore sessionDbStore = new SessionDbStore(pool);
-        UserDbStore userDbStore = new UserDbStore(pool);
+        TicketDbRepository ticketDbStore = new TicketDbRepository(pool);
+        SessionDbRepository sessionDbStore = new SessionDbRepository(pool);
+        UserDbRepository userDbStore = new UserDbRepository(pool);
         User user = new User("ars", "ars@mail.ru", "05576");
         int userId = userDbStore.addUser(user).get().getUserId();
         Movie movie = new Movie(1, "Titanic");

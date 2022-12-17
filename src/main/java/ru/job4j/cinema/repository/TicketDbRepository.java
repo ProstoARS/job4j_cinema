@@ -1,12 +1,11 @@
 package ru.job4j.cinema.repository;
 
-
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cinema.model.Ticket;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +13,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Repository
-public class TicketDbStore implements TicketRepository {
+public class TicketDbRepository implements TicketRepository {
 
-    private static final Logger LOG = LogManager.getLogger(TicketDbStore.class);
+    private static final Logger LOG = LogManager.getLogger(TicketDbRepository.class);
     private static final String INSERT = """
             INSERT INTO ticket(
             session_id, pos_row, cell, user_id)
@@ -27,9 +26,9 @@ public class TicketDbStore implements TicketRepository {
             SELECT * FROM ticket
             WHERE id = ?;
             """;
-    private final BasicDataSource pool;
+    private final DataSource pool;
 
-    public TicketDbStore(BasicDataSource pool) {
+    public TicketDbRepository(DataSource pool) {
         this.pool = pool;
     }
 

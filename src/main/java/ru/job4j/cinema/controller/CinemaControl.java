@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.cinema.model.Movie;
 import ru.job4j.cinema.model.User;
-import ru.job4j.cinema.repository.IMovieRepository;
+import ru.job4j.cinema.repository.MovieRepository;
 import ru.job4j.cinema.service.ISessionService;
 
 import javax.servlet.http.HttpSession;
@@ -19,10 +19,10 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class CinemaControl {
 
-    private final IMovieRepository iMovieRepository;
+    private final MovieRepository iMovieRepository;
     private final ISessionService iSessionService;
 
-    public CinemaControl(ISessionService iSessionService, IMovieRepository iMovieRepository) {
+    public CinemaControl(ISessionService iSessionService, MovieRepository iMovieRepository) {
         this.iSessionService = iSessionService;
         this.iMovieRepository = iMovieRepository;
         initCinema();

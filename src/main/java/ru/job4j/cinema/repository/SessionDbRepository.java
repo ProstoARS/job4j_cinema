@@ -1,7 +1,5 @@
 package ru.job4j.cinema.repository;
 
-
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cinema.model.Movie;
 
@@ -16,10 +14,12 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Repository
-public class SessionDbStore implements SessionRepository {
+import javax.sql.DataSource;
 
-    private static final Logger LOG = LogManager.getLogger(SessionDbStore.class);
+@Repository
+public class SessionDbRepository implements SessionRepository {
+
+    private static final Logger LOG = LogManager.getLogger(SessionDbRepository.class);
     private static final String FIND_ALL = """
             SELECT *
             FROM sessions
@@ -35,9 +35,9 @@ public class SessionDbStore implements SessionRepository {
             INSERT INTO sessions(name, photo) VALUES (?, ?)
             """;
 
-    private final BasicDataSource pool;
+    private final DataSource pool;
 
-    public SessionDbStore(BasicDataSource pool) {
+    public SessionDbRepository(DataSource pool) {
         this.pool = pool;
     }
 

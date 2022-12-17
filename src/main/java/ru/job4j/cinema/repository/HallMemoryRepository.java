@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static ru.job4j.cinema.util.PropertyReader.load;
 
 @Repository
-public class HallStore implements HallRepository {
+public class HallMemoryRepository implements HallRepository {
 
     private final Map<Integer, Hall> halls = new ConcurrentHashMap<>();
 
     private final AtomicInteger id = new AtomicInteger();
 
-    public HallStore() {
+    public HallMemoryRepository() {
         addHall(new Hall(7, 15,
                 addSchema(load("img_location.properties").getProperty("hallLocation"))));
     }
@@ -41,7 +41,7 @@ public class HallStore implements HallRepository {
     }
 
     private byte[] addSchema(String file) {
-        try (InputStream resource = HallStore.class.getResourceAsStream(file)) {
+        try (InputStream resource = HallMemoryRepository.class.getResourceAsStream(file)) {
             if (resource != null) {
                 return resource.readAllBytes();
             }
